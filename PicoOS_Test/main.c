@@ -24,7 +24,6 @@ static uint8_t t1 = (1 << PORTB5);
  * block
  */
 static void initialTask(void *arg) {
-
     posTaskCreate(ledTask, &t1, 1);
     posTaskCreate(consoleTask, NULL, 1);
 }
@@ -33,28 +32,28 @@ static void initialTask(void *arg) {
 static void ledTask(void *arg) {
     uint8_t *valuePtr = (uint8_t*) arg;
     uint8_t value = *valuePtr;
-	DDRB = 1 << PORTB5;
+    DDRB = 1 << PORTB5;
 
     while(1) {
         PORTB ^= value;
-		posTaskSleep(MS(500));
+        posTaskSleep(MS(500));
     }
 }
 
 static void consoleTask(void *arg) {
-	usart0_init();
-	init_printf(NULL, usart0_char);
-	
-	while(1) {
-		printf("Hi\n");
-		posTaskSleep(MS(1000));
-	}
+    usart0_init();
+    init_printf(NULL, usart0_char);
+
+    while(1) {
+        printf("Hi\n");
+        posTaskSleep(MS(1000));
+    }
 }
 
 int main(void)
 {   
     posInit(initialTask, NULL, 1);
-    
+
     return 0;
 }
 
